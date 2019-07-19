@@ -1,26 +1,22 @@
 #!/usr/bin/env python
 '''
-sudo ./raiseYourHandsUp.py --led-rows=32 --led-cols=32  --led-brightness=78 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
+    sudo ./raiseYourHandsUp.py --led-rows=32 --led-cols=32  --led-brightness=78 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
 '''
 from samplebase import SampleBase
-from led_functions import *
 import pyaudio
-from functions import *
-from layer2 import *
-from Sigil import *
 import re
 
 
 d = dict()
 d = {"0": [0x0, 0x0, 0x0],
-     "1": [255, 0x0, 255],
-     "2": [0x0, 0x0, 255],
-     "3": [0x0, 255, 255],
-     "4": [0x0, 255, 0x0],
-     "5": [255, 255, 0x0],
-     "6": [255,0xBE, 0x0],
-     "7": [255, 0x0, 0x0],
-     "9": [255, 255, 255]}
+    "1": [255, 0x0, 255],
+    "2": [0x0, 0x0, 255],
+    "3": [0x0, 255, 255],
+    "4": [0x0, 255, 0x0],
+    "5": [255, 255, 0x0],
+    "6": [255,0xBE, 0x0],
+    "7": [255, 0x0, 0x0],
+    "9": [255, 255, 255]}
 
 # chunk must be a multipe of 8
 # if chunk is too small program will crash
@@ -29,7 +25,7 @@ d = {"0": [0x0, 0x0, 0x0],
 no_channels = 1
 sample_rate = 44100
 chunk = 4000
-device = 2 
+device = 2
 
 p = pyaudio.PyAudio()
 
@@ -42,12 +38,12 @@ stream = p.open(format = pyaudio.paInt16,
 
 '''
     returns height
-                dictionary containing freq?
-'''
-def calculate_levels(data, chunk, sample_rate):    
+    dictionary containing freq?
+    '''
+def calculate_levels(data, chunk, sample_rate):
     data = unpack("%dh"%(len(data)/2),data)
     data = np.array(data, dtype='h')
-
+    
     # Apply FFT - real data
     fourier = np.fft.rfft(data)
     # Remove last element in array to make it the same size as chunk
@@ -70,13 +66,13 @@ def calculate_levels(data, chunk, sample_rate):
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
 '''
-'''
+    '''
 class VolumeBars(SampleBase):
     def __init__(self, *args, **kwargs):
         super(VolumeBars, self).__init__(*args, **kwargs)
-
+    
     def run(self):
-        fo = open("pixels_b", "r")
+        fo = open("pixels_2wb", "r")
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         
@@ -86,20 +82,20 @@ class VolumeBars(SampleBase):
                 for x in range(0, 32):
                     pixelPos = pixelStr[x+(y*32)]
                     canvas.SetPixel( x, y,
-                                     d[pixelPos][0],
-                                     d[pixelPos][1],
-                                     d[pixelPos][2])
+                                    d[pixelPos][0],
+                                    d[pixelPos][1],
+                                    d[pixelPos][2])
             canvas = self.matrix.SwapOnVSync(canvas)
             self.usleep(555555)
-            fo.close() 
+            fo.close()
 
-                   
+
 
 
 
 # Main function
 if __name__ == "__main__":
-    led_driver = VolumeBars()   
+    led_driver = VolumeBars()
     if (not led_driver.process()):
         led_driver.print_help()
 
