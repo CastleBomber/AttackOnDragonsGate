@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 '''
-    sudo ./raiseYourHandsUp.py --led-rows=32 --led-cols=32  --led-brightness=78 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
+sudo ./raiseYourHandsUp.py --led-rows=32 --led-cols=32  --led-brightness=78 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
 '''
 from samplebase import SampleBase
 import pyaudio
 import re
+import os
 
 
 d = dict()
@@ -39,7 +40,7 @@ stream = p.open(format = pyaudio.paInt16,
 '''
     returns height
     dictionary containing freq?
-    '''
+'''
 def calculate_levels(data, chunk, sample_rate):
     data = unpack("%dh"%(len(data)/2),data)
     data = np.array(data, dtype='h')
@@ -66,28 +67,30 @@ def calculate_levels(data, chunk, sample_rate):
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
 '''
-    '''
+'''
 class VolumeBars(SampleBase):
     def __init__(self, *args, **kwargs):
         super(VolumeBars, self).__init__(*args, **kwargs)
     
     def run(self):
-        fo = open("pixels_2wb", "r")
-        pixelStr = fo.read()
-        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         
         canvas = self.matrix.CreateFrameCanvas()
         while True:
-            for y in range(0, 32):
-                for x in range(0, 32):
-                    pixelPos = pixelStr[x+(y*32)]
-                    canvas.SetPixel( x, y,
-                                    d[pixelPos][0],
-                                    d[pixelPos][1],
-                                    d[pixelPos][2])
-            canvas = self.matrix.SwapOnVSync(canvas)
-            self.usleep(555555)
-            fo.close()
+            for file in os.listdir('/home/pi/Desktop/pixelSheets'):
+                fo = open(os.path.join('/home/pi/Desktop/pixelSheets', file))
+                pixelStr = fo.read()
+                pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+
+                for y in range(0, 32):
+                    for x in range(0, 32):
+                        pixelPos = pixelStr[x+(y*32)]
+                        canvas.SetPixel( x, y,
+                                        d[pixelPos][0],
+                                        d[pixelPos][1],
+                                        d[pixelPos][2])
+                canvas = self.matrix.SwapOnVSync(canvas)
+                self.usleep(99999)
+                fo.close()
 
 
 
