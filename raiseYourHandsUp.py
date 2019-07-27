@@ -68,12 +68,14 @@ height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
 '''
 '''
-class VolumeBars(SampleBase):
+class LightShow(SampleBase):
     def __init__(self, *args, **kwargs):
-        super(VolumeBars, self).__init__(*args, **kwargs)
+        super(LightShow, self).__init__(*args, **kwargs)
     
     def run(self):
-        
+        self.rndmFlipThrough()
+
+    def rndmFlipThrough(self):
         canvas = self.matrix.CreateFrameCanvas()
         while True:
             for file in os.listdir('/home/pi/Desktop/pixelSheets'):
@@ -89,16 +91,15 @@ class VolumeBars(SampleBase):
                                         d[pixelPos][1],
                                         d[pixelPos][2])
                 canvas = self.matrix.SwapOnVSync(canvas)
-                self.usleep(99999)
+                self.usleep(999999)
                 fo.close()
-
 
 
 
 
 # Main function
 if __name__ == "__main__":
-    led_driver = VolumeBars()
-    if (not led_driver.process()):
-        led_driver.print_help()
+    lightShow_driver = LightShow()
+    if (not lightShow_driver.process()):
+        lightShow_driver.print_help()
 
