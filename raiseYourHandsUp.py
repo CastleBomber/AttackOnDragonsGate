@@ -22,6 +22,7 @@ d = {"0": [0x0, 0x0, 0x0],
      "A": [255, 0x0, 255],
      "B": [0x8F,  0, 0xFF]}
 
+
 # chunk must be a multipe of 8
 # if chunk is too small program will crash
 # with error message: [Error Input overflowed]
