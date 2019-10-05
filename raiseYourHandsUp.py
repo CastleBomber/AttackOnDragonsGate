@@ -10,17 +10,17 @@ import os
 
 d = dict()
 d = {"0": [0x0, 0x0, 0x0],
-    "1": [255, 0x0, 255],
-    "2": [0x0, 0x0, 255],
-    "3": [0x0, 255, 255],
-    "4": [0x0, 255, 0x0],
-    "5": [255, 255, 0x0],
-    "6": [255,0xBE, 0x0],
-    "7": [255, 0x0, 0x0],
-    "8": [ 96,0x4B, 0x0],
-    "9": [255, 255, 255],
-    "A": [110,  93, 103]
-    "B": [255, 255, 204]}
+     "1": [255, 0x0, 255],
+     "2": [0x0, 0x0, 255],
+     "3": [0x0, 255, 255],
+     "4": [0x0, 255, 0x0],
+     "5": [255, 255, 0x0],
+     "6": [255,0xBE, 0x0],
+     "7": [255, 0x0, 0x0],
+     "8": [ 75,  25, 0x0],
+     "9": [255, 255, 255],
+     "A": [255, 0x0, 255],
+     "B": [0x8F,  0, 0xFF]}
 
 # chunk must be a multipe of 8
 # if chunk is too small program will crash
@@ -77,6 +77,8 @@ class LightShow(SampleBase):
         super(LightShow, self).__init__(*args, **kwargs)
     
     def run(self):
+        self.showMyWork()
+        
         self.goLeft()
         self.goRight()
         self.rndmFlipThrough()
@@ -153,6 +155,24 @@ class LightShow(SampleBase):
             pixelStr =  pixelStr[-1:] + taillessStr
             count += 1
             
+        fo.close()
+
+    def showMyWork(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        fo = open('/home/pi/Desktop/pixelSheets/volcano_1')
+        pixelStr = fo.read()
+        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+        count = 0
+
+        for y in range(0, 32):
+            for x in range(0, 32):
+                pixelPos = pixelStr[x+(y*32)]
+                canvas.SetPixel( x, y,
+                                 d[pixelPos][0],
+                                 d[pixelPos][1],
+                                 d[pixelPos][2])
+        canvas = self.matrix.SwapOnVSync(canvas)
+        self.usleep(99999999)
         fo.close()
 
         
