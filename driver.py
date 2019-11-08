@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-sudo ./raiseYourHandsUp.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
+sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
 '''
 from samplebase import SampleBase
 import pyaudio
@@ -9,18 +9,23 @@ import os
 
 
 d = dict()
-d = {"0": [0x0, 0x0, 0x0],
-     "1": [255, 0x0, 255],
-     "2": [0x0, 0x0, 255],
-     "3": [0x0, 255, 255],
-     "4": [0x0, 255, 0x0],
-     "5": [255, 255, 0x0],
-     "6": [255,0xBE, 0x0],
-     "7": [255, 0x0, 0x0],
-     "8": [ 75,  25, 0x0],
-     "9": [255, 255, 255],
-     "A": [255, 0x0, 255],
-     "B": [0x8F,  0, 0xFF]}
+d = {"0": [0x0, 0x0, 0x0], # Black
+     "1": [255, 0x0, 255], # Purple
+     "2": [0x0, 0x0, 255], # Dark Blue
+     "3": [0x0, 255, 255], # Light Blue
+     "4": [0x0, 255, 0x0], # Green
+     "5": [255, 255, 0x0], # Yellow
+     "6": [255,0xBE, 0x0], # Orange
+     "7": [255, 0x0, 0x0], # Red
+     "8": [ 75,  25, 0x0], # Brown
+     "9": [255, 255, 255], # White
+     "A": [0xFF, 0x0, 0xFF], # Color of Thoughts
+     "B": [0x8F, 0x0, 0XFF],  # Dragon's Eyes || M's
+     "C": [0xD2, 0xB4, 0x8C], # Tan
+     "E": [ 0xDB, 0xE9, 0xF4], # Dragon's Claws
+     "D": [0xD8, 0x91, 0xEF], # Bright Lilac
+     "R": [0x80, 0x00, 0x20]
+     }
 
 
 # chunk must be a multipe of 8
@@ -78,6 +83,7 @@ class LightShow(SampleBase):
         super(LightShow, self).__init__(*args, **kwargs)
     
     def run(self):
+        self.rndmFlipThrough()
         self.showMyWork()
         
         self.goLeft()
@@ -95,6 +101,8 @@ class LightShow(SampleBase):
                 fo = open(os.path.join('/home/pi/Desktop/pixelSheets', file))
                 pixelStr = fo.read()
                 pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+
+                print("filename: " + file)
 
                 for y in range(0, 32):
                     for x in range(0, 32):
@@ -160,7 +168,7 @@ class LightShow(SampleBase):
 
     def showMyWork(self):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/volcano_1')
+        fo = open('/home/pi/Desktop/pixelSheets/dragon')
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
