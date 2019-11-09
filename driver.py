@@ -83,7 +83,10 @@ class LightShow(SampleBase):
         super(LightShow, self).__init__(*args, **kwargs)
     
     def run(self):
-        self.rndmFlipThrough()
+        #self.kaskade()
+        #self.rndmKaskade()
+        #self.sceneFlipThrough()
+        #self.rndmFlipThrough()
         self.showMyWork()
         
         self.goLeft()
@@ -168,7 +171,7 @@ class LightShow(SampleBase):
 
     def showMyWork(self):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/dragon')
+        fo = open('/home/pi/Desktop/pixelSheets/tori_2')
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
@@ -181,8 +184,76 @@ class LightShow(SampleBase):
                                  d[pixelPos][1],
                                  d[pixelPos][2])
         canvas = self.matrix.SwapOnVSync(canvas)
-        self.usleep(99999999)
+        self.usleep(999999999)
         fo.close()
+        
+    # Choosing specific scene
+    # should add time factor
+    def sceneFlipThrough(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        while True:
+            for file in sorted(os.listdir('/home/pi/Desktop/scenes/volcanoScene')):
+                fo = open(os.path.join('/home/pi/Desktop/scenes/volcanoScene', file))
+                pixelStr = fo.read()
+                pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+
+                print("filename: " + file)
+
+                for y in range(0, 32):
+                    for x in range(0, 32):
+                        pixelPos = pixelStr[x+(y*32)]
+                        canvas.SetPixel( x, y,
+                                        d[pixelPos][0],
+                                        d[pixelPos][1],
+                                        d[pixelPos][2])
+                canvas = self.matrix.SwapOnVSync(canvas)
+                self.usleep((476190)/2)
+                fo.close()
+
+    def rndmKaskade(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        fo = open('/home/pi/Desktop/pixelSheets/thoughts')
+        pixelStr = fo.read()
+        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+        count = 0
+
+        while (count < 32):
+            for x in range(0, 32):
+                for y in range(0, 32):
+                    pixelPos = pixelStr[x+(y*32)]
+                    canvas.SetPixel( x, y,
+                                     d[pixelPos][0],
+                                     d[pixelPos][1],
+                                     d[pixelPos][2])
+                canvas = self.matrix.SwapOnVSync(canvas)
+                self.usleep((476190)/2)
+
+        self.usleep(999999)
+        fo.close()
+
+    def kaskade(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        fo = open('/home/pi/Desktop/pixelSheets/thoughts')
+        pixelStr = fo.read()
+        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+        count = 0
+
+        while (count < 32):
+            for x in range(0, 32):
+                for m in range(0, (x+1)):
+                    for y in range(0, 32):
+                        pixelPos = pixelStr[m+(y*32)]
+                        canvas.SetPixel( m, y,
+                                         d[pixelPos][0],
+                                         d[pixelPos][1],
+                                         d[pixelPos][2])
+                canvas = self.matrix.SwapOnVSync(canvas)
+                self.usleep((476190)/2)
+                count += 1
+
+        self.usleep(999999)
+        fo.close()
+        
 
         
 
@@ -190,4 +261,3 @@ if __name__ == "__main__":
     lightShow_driver = LightShow()
     if (not lightShow_driver.process()):
         lightShow_driver.print_help()
-
