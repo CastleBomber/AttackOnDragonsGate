@@ -21,7 +21,7 @@ d = {"0": [0x0, 0x0, 0x0], # Black
      "9": [255, 255, 255], # White
      "A": [0xFF, 0x0, 0xFF], # Color of Thoughts
      "B": [0x8F, 0x0, 0XFF],  # Dragon's Eyes || M's
-     "C": [0xD2, 0xB4, 0x8C], # Tan
+     "C": [0xA5, 0x2A, 0x2A], # Aubrun
      "E": [ 0xDB, 0xE9, 0xF4], # Dragon's Claws
      "D": [0xD8, 0x91, 0xEF], # Bright Lilac
      "R": [0x80, 0x00, 0x20]
@@ -171,7 +171,7 @@ class LightShow(SampleBase):
 
     def showMyWork(self):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/tori_2')
+        fo = open('/home/pi/Desktop/pixelSheets/dragon')
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
