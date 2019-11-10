@@ -75,6 +75,9 @@ def calculate_levels(data, chunk, sample_rate):
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
+songBPM = 90
+microBPM = (60000/songBPM)*(1000) # ms, used for usleep
+
 '''
     CastleBomber sigil/ show
 '''
@@ -92,6 +95,25 @@ class LightShow(SampleBase):
         self.goLeft()
         self.goRight()
         self.rndmFlipThrough()
+
+
+    def showMyWork(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        fo = open('/home/pi/Desktop/pixelSheets/pixels_2wb')
+        pixelStr = fo.read()
+        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+        count = 0
+
+        for y in range(0, 32):
+            for x in range(0, 32):
+                pixelPos = pixelStr[x+(y*32)]
+                canvas.SetPixel( x, y,
+                                 d[pixelPos][0],
+                                 d[pixelPos][1],
+                                 d[pixelPos][2])
+        canvas = self.matrix.SwapOnVSync(canvas)
+        self.usleep(999999999)
+        fo.close()
 
     '''
         Inside the folder 'pixelSheets' are "sketches"
@@ -168,24 +190,6 @@ class LightShow(SampleBase):
             count += 1
             
         fo.close()
-
-    def showMyWork(self):
-        canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/dragon')
-        pixelStr = fo.read()
-        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
-        count = 0
-
-        for y in range(0, 32):
-            for x in range(0, 32):
-                pixelPos = pixelStr[x+(y*32)]
-                canvas.SetPixel( x, y,
-                                 d[pixelPos][0],
-                                 d[pixelPos][1],
-                                 d[pixelPos][2])
-        canvas = self.matrix.SwapOnVSync(canvas)
-        self.usleep(999999999)
-        fo.close()
         
     # Choosing specific scene
     # should add time factor
@@ -233,7 +237,7 @@ class LightShow(SampleBase):
 
     def kaskade(self):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/thoughts')
+        fo = open('/home/pi/Desktop/pixelSheets/dragon')
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
@@ -248,10 +252,10 @@ class LightShow(SampleBase):
                                          d[pixelPos][1],
                                          d[pixelPos][2])
                 canvas = self.matrix.SwapOnVSync(canvas)
-                self.usleep((476190)/2)
+                self.usleep(microBPM/4)
                 count += 1
 
-        self.usleep(999999)
+        self.usleep(9999999)
         fo.close()
         
 
