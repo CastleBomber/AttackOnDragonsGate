@@ -76,7 +76,7 @@ def calculate_levels(data, chunk, sample_rate):
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
-songBPM = 90
+songBPM = 126
 microBPM = (60000/songBPM)*(1000) # ms, used for usleep
 
 '''
@@ -91,7 +91,7 @@ class LightShow(SampleBase):
         
         # Act 1
         #self.goLeft("bomb_left_bw")
-        self.sceneFlipThroughCount("thoughtsScene", 1)
+        #self.sceneFlipThroughCount("thoughtsScene", 1)
         #self.goLeft("bomb_left_eb")
         #self.sceneFlipThroughCount("moonScene", 1)
         #self.goLeft("bomb_left_wb")
@@ -110,12 +110,14 @@ class LightShow(SampleBase):
         #self.rndmKaskade("dragon")
         #self.sceneFlipThrough()
         #self.rndmFlipThrough()
-        #self.showMyWork()
+        self.showMyWork("tori_1")
 
 
-    def showMyWork(self):
+    def showMyWork(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/pixels_2wb')
+        sheetName = sheet
+        
+        fo = open('/home/pi/Desktop/pixelSheets/' + sheetName)
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
