@@ -6,6 +6,7 @@ from samplebase import SampleBase
 import pyaudio
 import re
 import os
+import time
 
 
 d = dict()
@@ -86,15 +87,30 @@ class LightShow(SampleBase):
         super(LightShow, self).__init__(*args, **kwargs)
     
     def run(self):
-        #self.kaskade()
-        #self.rndmKaskade()
+        
+        
+        # Act 1
+        #self.goLeft("bomb_left_bw")
+        self.sceneFlipThroughCount("thoughtsScene", 1)
+        #self.goLeft("bomb_left_eb")
+        #self.sceneFlipThroughCount("moonScene", 1)
+        #self.goLeft("bomb_left_wb")
+        #self.sceneFlipThroughCount("moonScene", 1)
+        
+        #self.goRight("bomb_right_bw")
+        #self.sceneFlipThroughCount("moonScene", 1)
+        #self.goRight("bomb_right_eb")
+        #self.sceneFlipThroughCount("moonScene", 1)
+        #self.goRight("bomb_right_wb")
+        #self.sceneFlipThroughCount("moonScene", 1)
+
+        #print(time.clock())
+        #self.kaskade("dragon")
+        #print(time.clock())
+        #self.rndmKaskade("dragon")
         #self.sceneFlipThrough()
         #self.rndmFlipThrough()
-        self.showMyWork()
-        
-        self.goLeft()
-        self.goRight()
-        self.rndmFlipThrough()
+        #self.showMyWork()
 
 
     def showMyWork(self):
@@ -145,9 +161,10 @@ class LightShow(SampleBase):
         set up count for 32 steps
         would slowly slide up if not stopped
     '''
-    def goLeft(self):
+    def goLeft(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/pixels_2bw')
+        sheetName = sheet
+        fo = open('/home/pi/Desktop/pixelSheets/' + sheetName)
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
@@ -161,16 +178,17 @@ class LightShow(SampleBase):
                                         d[pixelPos][1],
                                         d[pixelPos][2])
             canvas = self.matrix.SwapOnVSync(canvas)
-            self.usleep(99999)
+            self.usleep(microBPM/8)
             headlessStr = pixelStr[1:]
             pixelStr = headlessStr + pixelStr[0]
             count += 1
             
         fo.close()
 
-    def goRight(self):
+    def goRight(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/pixels_3bw')
+        sheetName = sheet
+        fo = open('/home/pi/Desktop/pixelSheets/' + sheetName)
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
@@ -184,7 +202,7 @@ class LightShow(SampleBase):
                                         d[pixelPos][1],
                                         d[pixelPos][2])
             canvas = self.matrix.SwapOnVSync(canvas)
-            self.usleep(99999)
+            self.usleep(microBPM/8)
             taillessStr = pixelStr[:-1]
             pixelStr =  pixelStr[-1:] + taillessStr
             count += 1
@@ -193,11 +211,12 @@ class LightShow(SampleBase):
         
     # Choosing specific scene
     # should add time factor
-    def sceneFlipThrough(self):
+    def sceneFlipThrough(self, scene):
         canvas = self.matrix.CreateFrameCanvas()
+        sceneName = scene
         while True:
-            for file in sorted(os.listdir('/home/pi/Desktop/scenes/volcanoScene')):
-                fo = open(os.path.join('/home/pi/Desktop/scenes/volcanoScene', file))
+            for file in sorted(os.listdir('/home/pi/Desktop/scenes/' + sceneName)):
+                fo = open(os.path.join('/home/pi/Desktop/scenes/' + sceneName, file))
                 pixelStr = fo.read()
                 pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
 
@@ -214,9 +233,39 @@ class LightShow(SampleBase):
                 self.usleep((476190)/2)
                 fo.close()
 
-    def rndmKaskade(self):
+    # probably only flipped through once
+    # 4 images usually make the entire scene
+    def sceneFlipThroughCount(self, scene, maxFlips):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/thoughts')
+        sceneName = scene
+        flips = 0
+        while (flips < maxFlips):
+            for file in sorted(os.listdir('/home/pi/Desktop/scenes/' + sceneName)):
+                fo = open(os.path.join('/home/pi/Desktop/scenes/' + sceneName, file))
+                pixelStr = fo.read()
+                pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+
+                print("filename: " + file)
+
+                for y in range(0, 32):
+                    for x in range(0, 32):
+                        pixelPos = pixelStr[x+(y*32)]
+                        canvas.SetPixel( x, y,
+                                        d[pixelPos][0],
+                                        d[pixelPos][1],
+                                        d[pixelPos][2])
+                canvas = self.matrix.SwapOnVSync(canvas)
+                self.usleep(microBPM)
+                fo.close()
+            flips += 1
+        self.usleep(9999999)
+                
+
+    def rndmKaskade(self, sheet):
+        canvas = self.matrix.CreateFrameCanvas()
+        sheetName = sheet
+        
+        fo = open('/home/pi/Desktop/pixelSheets/' + sheetName)
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
@@ -230,14 +279,16 @@ class LightShow(SampleBase):
                                      d[pixelPos][1],
                                      d[pixelPos][2])
                 canvas = self.matrix.SwapOnVSync(canvas)
-                self.usleep((476190)/2)
+                self.usleep((microBPM)/4)
 
         self.usleep(999999)
         fo.close()
 
-    def kaskade(self):
+    def kaskade(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
-        fo = open('/home/pi/Desktop/pixelSheets/dragon')
+        sheetName = sheet
+        
+        fo = open('/home/pi/Desktop/pixelSheets/' + sheetName)
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
