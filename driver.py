@@ -110,7 +110,8 @@ class LightShow(SampleBase):
         #self.rndmKaskade("dragon")
         #self.sceneFlipThrough()
         #self.rndmFlipThrough()
-        self.showMyWorkInDir("scenes/finalScene/finalBomb_5")
+        #self.showMyWorkInDir("scenes/finalScene/finalBomb_9a")
+        self.sceneFlipThroughCount("finalScene", 2)
 
 
     def showMyWork(self, sheet):
