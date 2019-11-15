@@ -76,7 +76,7 @@ def calculate_levels(data, chunk, sample_rate):
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
-songBPM = 126
+songBPM = 90
 microBPM = (60000/songBPM)*(1000) # ms, used for usleep
 
 '''
@@ -91,7 +91,7 @@ class LightShow(SampleBase):
         
         # Act 1
         #self.goLeft("bomb_left_bw")
-        #self.sceneFlipThroughCount("thoughtsScene", 1)
+        #self.sceneFlipThroughCount("clawScene", 2)
         #self.goLeft("bomb_left_eb")
         #self.sceneFlipThroughCount("moonScene", 1)
         #self.goLeft("bomb_left_wb")
@@ -110,7 +110,7 @@ class LightShow(SampleBase):
         #self.rndmKaskade("dragon")
         #self.sceneFlipThrough()
         #self.rndmFlipThrough()
-        self.showMyWork("tori_1")
+        self.showMyWorkInDir("scenes/finalScene/finalBomb")
 
 
     def showMyWork(self, sheet):
@@ -118,6 +118,26 @@ class LightShow(SampleBase):
         sheetName = sheet
         
         fo = open('/home/pi/Desktop/pixelSheets/' + sheetName)
+        pixelStr = fo.read()
+        pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
+        count = 0
+
+        for y in range(0, 32):
+            for x in range(0, 32):
+                pixelPos = pixelStr[x+(y*32)]
+                canvas.SetPixel( x, y,
+                                 d[pixelPos][0],
+                                 d[pixelPos][1],
+                                 d[pixelPos][2])
+        canvas = self.matrix.SwapOnVSync(canvas)
+        self.usleep(999999999)
+        fo.close()
+
+    def showMyWorkInDir(self, sheet):
+        canvas = self.matrix.CreateFrameCanvas()
+        sheetName = sheet
+        
+        fo = open('/home/pi/Desktop/' + sheetName)
         pixelStr = fo.read()
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
@@ -281,7 +301,7 @@ class LightShow(SampleBase):
                                      d[pixelPos][1],
                                      d[pixelPos][2])
                 canvas = self.matrix.SwapOnVSync(canvas)
-                self.usleep((microBPM)/4)
+                self.usleep((microBPM)/8)
 
         self.usleep(999999)
         fo.close()
@@ -305,10 +325,10 @@ class LightShow(SampleBase):
                                          d[pixelPos][1],
                                          d[pixelPos][2])
                 canvas = self.matrix.SwapOnVSync(canvas)
-                self.usleep(microBPM/4)
+                self.usleep(microBPM/8)
                 count += 1
 
-        self.usleep(9999999)
+        self.usleep(999999)
         fo.close()
         
 
