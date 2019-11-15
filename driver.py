@@ -16,7 +16,7 @@ d = {"0": [0x0, 0x0, 0x0], # Black
      "3": [0x0, 255, 255], # Light Blue
      "4": [0x0, 255, 0x0], # Green
      "5": [255, 255, 0x0], # Yellow
-     "6": [255,0xBE, 0x0], # Orange
+     "6": [255, 103, 0x0], # Blaze Orange
      "7": [255, 0x0, 0x0], # Red
      "8": [ 75,  25, 0x0], # Brown
      "9": [255, 255, 255], # White
@@ -110,7 +110,7 @@ class LightShow(SampleBase):
         #self.rndmKaskade("dragon")
         #self.sceneFlipThrough()
         #self.rndmFlipThrough()
-        self.showMyWorkInDir("scenes/finalScene/finalBomb")
+        self.showMyWorkInDir("scenes/finalScene/finalBomb_5")
 
 
     def showMyWork(self, sheet):
