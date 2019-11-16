@@ -76,7 +76,7 @@ def calculate_levels(data, chunk, sample_rate):
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
 
-songBPM = 90
+songBPM = 126
 microBPM = (60000/songBPM)*(1000) # ms, used for usleep
 
 '''
@@ -90,7 +90,7 @@ class LightShow(SampleBase):
         
         
         # Act 1
-        #self.goLeft("bomb_left_bw")
+        self.goLeft("bomb_left_bw")
         #self.sceneFlipThroughCount("clawScene", 2)
         #self.goLeft("bomb_left_eb")
         #self.sceneFlipThroughCount("moonScene", 1)
@@ -110,8 +110,10 @@ class LightShow(SampleBase):
         #self.rndmKaskade("dragon")
         #self.sceneFlipThrough()
         #self.rndmFlipThrough()
-        #self.showMyWorkInDir("scenes/finalScene/finalBomb_9a")
-        self.sceneFlipThroughCount("finalScene", 2)
+        #self.showMyWorkInDir("pixelSheets/thoughts_9a")
+        #self.sceneFlipThroughCount("thoughtsScene", 2)
+        #self.kaskade("intro_3")
+        self.usleep(9999999)
 
 
     def showMyWork(self, sheet):
@@ -201,7 +203,8 @@ class LightShow(SampleBase):
                                         d[pixelPos][1],
                                         d[pixelPos][2])
             canvas = self.matrix.SwapOnVSync(canvas)
-            self.usleep(microBPM/8)
+            #self.usleep(microBPM/8) # main one, going to try another
+            self.usleep(microBPM/12)
             headlessStr = pixelStr[1:]
             pixelStr = headlessStr + pixelStr[0]
             count += 1
@@ -225,7 +228,8 @@ class LightShow(SampleBase):
                                         d[pixelPos][1],
                                         d[pixelPos][2])
             canvas = self.matrix.SwapOnVSync(canvas)
-            self.usleep(microBPM/8)
+            #self.usleep(microBPM/8) # MAIN
+            self.usleep(microBPM/12)
             taillessStr = pixelStr[:-1]
             pixelStr =  pixelStr[-1:] + taillessStr
             count += 1
