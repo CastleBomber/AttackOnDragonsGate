@@ -7,7 +7,7 @@ import pyaudio
 import re
 import os
 import time
-from functions import LightShow
+from light_show import LightShow
 #from functions import LightShow.goRight
         
 
