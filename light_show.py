@@ -36,17 +36,20 @@ microBPM = (60000/songBPM)*(1000) # ms, used for usleep
     CastleBomber sigil/ show
 '''
 class LightShow(SampleBase):
+
+    
     def __init__(self, *args, **kwargs):
         super(LightShow, self).__init__(*args, **kwargs)
     
+    # all the work is done here
+    # self.functionCall(arguments)
     def run(self):
-        
-##        self.sceneFlipThroughCount("whiteMoonScene", 1)
-##        self.goRight("bomb_right_wb")
+        self.sceneFlipThroughCount("whiteMoonScene", 1)
+        self.goRight("bomb_right_wb")
         self.sceneFlipThroughCount("finalScene", 1)
         self.usleep(999999999)
 
-
+    # @param sheet - pixelSheet to show off
     def showMyWork(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
         sheetName = sheet
@@ -67,6 +70,8 @@ class LightShow(SampleBase):
         self.usleep(999999999)
         fo.close()
 
+    # show off work located in a far off directory
+    # @param sheet - pixelSheet to show off
     def showMyWorkInDir(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
         sheetName = sheet
@@ -87,10 +92,7 @@ class LightShow(SampleBase):
         self.usleep(microBPM)
         fo.close()
 
-    '''
-        Inside the folder 'pixelSheets' are "sketches"
-        flips through images (have yet to work the ordering)
-    '''
+    # randomly goes through all sheets
     def rndmFlipThrough(self):
         canvas = self.matrix.CreateFrameCanvas()
         while True:
@@ -112,11 +114,10 @@ class LightShow(SampleBase):
                 self.usleep(999999)
                 fo.close()
 
-    '''
-        Sigil goes left,
-        set up count for 32 steps
-        would slowly slide up if not stopped
-    '''
+    
+    # Sigil goes left,
+    # set up count for 32 steps
+    # would slowly slide up if not stopped
     def goLeft(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
         sheetName = sheet
@@ -242,6 +243,7 @@ class LightShow(SampleBase):
         self.usleep(999999)
         fo.close()
 
+    # creates cool effect
     def kaskade(self, sheet):
         canvas = self.matrix.CreateFrameCanvas()
         sheetName = sheet

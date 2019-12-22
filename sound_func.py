@@ -28,7 +28,7 @@ stream = p.open(format = pyaudio.paInt16,
 
 '''
     returns height
-    dictionary containing freq?
+    dictionary containing (freq perh.)
 '''
 def calculate_levels(data, chunk, sample_rate):
     data = unpack("%dh"%(len(data)/2),data)
@@ -50,7 +50,7 @@ def calculate_levels(data, chunk, sample_rate):
     height[7] = int(np.mean(power[piff(250):piff(500):1])/500)
     height[8] = int(np.mean(power[piff(150):piff(250):1])/750)
     height[9] = int(np.mean(power[piff(100):piff(150):1])/1000)
-    print(height)#for testing purposes
+    print(height)
     return height
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
