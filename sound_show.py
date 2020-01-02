@@ -1,12 +1,14 @@
-#!/usr/bin/env python
 '''
 sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
+
 '''
 from samplebase import SampleBase
 import pyaudio
 import re
 import os
 import time
+from struct import unpack
+import numpy as np
 
 # chunk must be a multipe of 8
 # if chunk is too small program will crash
@@ -33,7 +35,7 @@ stream = p.open(format = pyaudio.paInt16,
 def calculate_levels(data, chunk, sample_rate):
     data = unpack("%dh"%(len(data)/2),data)
     data = np.array(data, dtype='h')
-    
+
     # Apply FFT - real data
     fourier = np.fft.rfft(data)
     # Remove last element in array to make it the same size as chunk
@@ -54,3 +56,43 @@ def calculate_levels(data, chunk, sample_rate):
     return height
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
+
+
+def red(y):
+    if(y < 2): return 0
+    if(y > 13): return 255
+    return 255/16*y
+
+def green(y):
+    if(y > 13): return 0
+    if(y < 2): return 255
+    return 19*(19/y)
+
+def piff(val):
+    return int(2*chunk*val/sample_rate)
+
+class SoundShow(SampleBase):
+    def __init__(self, *args, **kwargs):
+        super(SoundShow, self).__init__(*args, **kwargs)
+        
+    def run(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        while True:
+            data = stream.read(chunk)
+            self.usleep(5000)
+            height = calculate_levels(data, chunk, sample_rate)
+            i=0
+            for x in range(1,31,3):
+                for y in range(0,16):
+                    if(y < height[i]):
+                        canvas.SetPixel(x,y,red(y),green(y),0)
+                        canvas.SetPixel(x+1,y,red(y),green(y),0)
+                        canvas.SetPixel(x+2,y,red(y),green(y),0)
+                    else:
+                        canvas.SetPixel(x,y,0,0,0)
+                        canvas.SetPixel(x+1,y,0,0,0)
+                        canvas.SetPixel(x+2,y,0,0,0)
+                i+=1
+            canvas = self.matrix.SwapOnVSync(canvas)
+        
+#    def firstFunction(self, param):

@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-'''
-sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
-'''
 from samplebase import SampleBase
 import pyaudio
 import re
@@ -36,8 +32,6 @@ microBPM = (60000/songBPM)*(1000) # ms, used for usleep
     CastleBomber sigil/ show
 '''
 class LightShow(SampleBase):
-
-    
     def __init__(self, *args, **kwargs):
         super(LightShow, self).__init__(*args, **kwargs)
     
