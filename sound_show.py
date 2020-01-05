@@ -76,6 +76,10 @@ class SoundShow(SampleBase):
         super(SoundShow, self).__init__(*args, **kwargs)
         
     def run(self):
+        self.firstFunction()
+        
+        
+    def firstFunction(self):
         canvas = self.matrix.CreateFrameCanvas()
         while True:
             data = stream.read(chunk)
@@ -94,5 +98,3 @@ class SoundShow(SampleBase):
                         canvas.SetPixel(x+2,y,0,0,0)
                 i+=1
             canvas = self.matrix.SwapOnVSync(canvas)
-        
-#    def firstFunction(self, param):
