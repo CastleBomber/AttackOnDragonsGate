@@ -53,6 +53,7 @@ def calculate_levels(data, chunk, sample_rate):
     height[8] = int(np.mean(power[piff(150):piff(250):1])/750)
     height[9] = int(np.mean(power[piff(100):piff(150):1])/1000)
     print(height)
+    #print(piff(16000))
     return height
 
 height = {9:0,8:0,7:0,6:0,5:0,4:0,3:0,2:0,1:0,0:0}
@@ -76,10 +77,33 @@ class SoundShow(SampleBase):
         super(SoundShow, self).__init__(*args, **kwargs)
         
     def run(self):
-        self.firstFunction()
+        self.soundVisualizer()
+        #self.teamWaveForm()
+        
+    # 32x32
+    def soundVisualizer(self):
+        canvas = self.matrix.CreateFrameCanvas()
+        while True:
+            data = stream.read(chunk)
+            self.usleep(5000)
+            height = calculate_levels(data, chunk, sample_rate)
+            i=0
+            for x in range(1,31,3):
+                for y in range(0,16):
+                    if(y < height[i]):
+                        canvas.SetPixel( x, y,red(y),green(y),255)
+                        canvas.SetPixel(x+1,y,red(y),green(y),255)
+                        canvas.SetPixel(x+2,y,red(y),green(y),255)
+                    else:
+                        canvas.SetPixel( x, y,0,0,0)
+                        canvas.SetPixel(x+1,y,0,0,0)
+                        canvas.SetPixel(x+2,y,0,0,0)
+                i+=1
+            canvas = self.matrix.SwapOnVSync(canvas)
         
         
-    def firstFunction(self):
+    # 16x32
+    def teamWaveForm(self):
         canvas = self.matrix.CreateFrameCanvas()
         while True:
             data = stream.read(chunk)

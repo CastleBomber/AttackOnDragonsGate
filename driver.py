@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 '''
-sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
+sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=60 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
 
-    Original Code: Team Waveform
+    Code: Team Waveform
 '''
 from light_show import LightShow
 from sound_show import SoundShow
