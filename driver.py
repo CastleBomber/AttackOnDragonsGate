@@ -5,6 +5,7 @@ sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=60 --led-pwm-lsb-
     Code: Team Waveform
 '''
 from light_show import LightShow
+from team_show import TeamShow
 from sound_show import SoundShow
 from samplebase import SampleBase
 import pyaudio
@@ -15,7 +16,8 @@ import time
 
 if __name__ == "__main__":
     #lightShow = LightShow()
-    soundShow = SoundShow()
+    teamShow = TeamShow()
+    #soundShow = SoundShow()
     if (not soundShow.process()):
         soundShow.print_help()
 #    if (not lightShow.process()):

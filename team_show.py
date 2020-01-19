@@ -1,17 +1,8 @@
-'''
-sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
-
-'''
 from samplebase import SampleBase
 import pyaudio
 import re
 import os
 import time
-
-
-
-
-
 from struct import unpack
 import numpy as np
 
@@ -77,17 +68,15 @@ def green(y):
 def piff(val):
     return int(2*chunk*val/sample_rate)
 
-class SoundShow(SampleBase):
+class TeamShow(SampleBase):
     def __init__(self, *args, **kwargs):
-        super(SoundShow, self).__init__(*args, **kwargs)
+        super(TeamShow, self).__init__(*args, **kwargs)
         
     def run(self):
-        self.soundVisualizer()
-        #self.teamWaveForm()
+        self.teamWaveForm()
         
-    # 32x32
-    # goal: fill up square w/ same data 
-    def soundVisualizer(self):
+    # 16x32
+    def teamWaveForm(self):
         canvas = self.matrix.CreateFrameCanvas()
         while True:
             data = stream.read(chunk)
@@ -97,11 +86,11 @@ class SoundShow(SampleBase):
             for x in range(1,31,3):
                 for y in range(0,16):
                     if(y < height[i]):
-                        canvas.SetPixel( x, y,red(y),green(y),255)
-                        canvas.SetPixel(x+1,y,red(y),green(y),255)
-                        canvas.SetPixel(x+2,y,red(y),green(y),255)
+                        canvas.SetPixel(x,y,red(y),green(y),0)
+                        canvas.SetPixel(x+1,y,red(y),green(y),0)
+                        canvas.SetPixel(x+2,y,red(y),green(y),0)
                     else:
-                        canvas.SetPixel( x, y,0,0,0)
+                        canvas.SetPixel(x,y,0,0,0)
                         canvas.SetPixel(x+1,y,0,0,0)
                         canvas.SetPixel(x+2,y,0,0,0)
                 i+=1
