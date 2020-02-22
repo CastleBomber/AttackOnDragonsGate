@@ -6,23 +6,20 @@ import time
 from struct import unpack
 import numpy as np
 
-# chunk must be a multipe of 8
-# if chunk is too small program will crash
-# with error message: [Error Input overflowed]
-# device 2 is usb audio
+
 no_channels = 1
 sample_rate = 44100
 chunk = 4000
 device = 2
-
 p = pyaudio.PyAudio()
-
+global stream
 stream = p.open(format = pyaudio.paInt16,
                 channels = no_channels,
                 rate = sample_rate,
                 input = True,
                 frames_per_buffer = chunk,
                 input_device_index = 2) # 2 || 4 hmm
+
 
 '''
     returns height
@@ -71,6 +68,7 @@ def piff(val):
 class TeamShow(SampleBase):
     def __init__(self, *args, **kwargs):
         super(TeamShow, self).__init__(*args, **kwargs)
+
         
     def run(self):
         self.teamWaveForm()
@@ -95,3 +93,23 @@ class TeamShow(SampleBase):
                         canvas.SetPixel(x+2,y,0,0,0)
                 i+=1
             canvas = self.matrix.SwapOnVSync(canvas)
+
+    def openChannels(self):
+        # chunk must be a multipe of 8
+        # if chunk is too small program will crash
+        # with error message: [Error Input overflowed]
+        # device 2 is usb audio
+        no_channels = 1
+        sample_rate = 44100
+        chunk = 4000
+        device = 2
+
+        p = pyaudio.PyAudio()
+
+        stream = p.open(format = pyaudio.paInt16,
+                        channels = no_channels,
+                        rate = sample_rate,
+                        input = True,
+                        frames_per_buffer = chunk,
+                        input_device_index = 2) # 2 || 4 hmm
+        
