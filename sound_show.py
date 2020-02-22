@@ -8,10 +8,6 @@ import re
 import os
 import time
 
-
-
-
-
 from struct import unpack
 import numpy as np
 
