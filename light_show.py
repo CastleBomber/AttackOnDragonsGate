@@ -29,7 +29,11 @@ songBPM = 90
 microBPM = (60000/songBPM)*(1000) # ms, used for usleep
 
 '''
-    CastleBomber sigil/ show
+    Attack On Dragon's Gate's Code
+    
+    Raspberry Pi + RGB Hat
+    1 32x32 LED Matrix
+    
 '''
 class LightShow(SampleBase):
     def __init__(self, *args, **kwargs):
@@ -38,6 +42,8 @@ class LightShow(SampleBase):
     # all the work is done here
     # self.functionCall(arguments)
     def run(self):
+        #self.showMyWork("dragon")
+        
         self.sceneFlipThroughCount("whiteMoonScene", 1)
         self.goRight("bomb_right_wb")
         self.sceneFlipThroughCount("finalScene", 1)
