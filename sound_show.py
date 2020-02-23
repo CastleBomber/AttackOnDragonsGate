@@ -1,10 +1,7 @@
-'''
-sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=40 --led-pwm-lsb-nanoseconds=300 --led-slowdown-gpio=2
-
-'''
 from samplebase import SampleBase
 #from team_show import TeamShow
 from team_show import *
+from sound_manager import *
 
 import pyaudio
 import re
@@ -14,17 +11,17 @@ import time
 from struct import unpack
 import numpy as np
 
-class SoundShow(TeamShow):
+'''
+   32x32
+'''
+class SoundShow(SoundManager):
     def __init__(self, *args, **kwargs):
         super(SoundShow, self).__init__(*args, **kwargs)
         
     def run(self):
-        
-        #self.teamWaveForm()
-        #self.openChannels()
         self.soundVisualizer()
         
-    # 32x32
+    
     # goal: fill up square w/ same data 
     def soundVisualizer(self):
         canvas = self.matrix.CreateFrameCanvas()
