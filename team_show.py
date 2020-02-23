@@ -1,4 +1,5 @@
 from samplebase import SampleBase
+from sound_manager import *
 import pyaudio
 import re
 import os
@@ -8,8 +9,10 @@ import numpy as np
 ##chop
 
 
-
-class TeamShow(SampleBase):
+'''
+    16x32
+'''
+class TeamShow(SoundManager):
     def __init__(self, *args, **kwargs):
         super(TeamShow, self).__init__(*args, **kwargs)
 
