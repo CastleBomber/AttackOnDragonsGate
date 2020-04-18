@@ -4,7 +4,8 @@ sudo ./driver.py --led-rows=32 --led-cols=32  --led-brightness=60 --led-pwm-lsb-
 
     Code: Team Waveform
 '''
-#goods 
+# goods
+# goodygoods
 
 from show_manager import ShowManager
 
