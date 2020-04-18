@@ -21,8 +21,7 @@ class SoundShow(SoundManager):
     def run(self):
         self.soundVisualizer()
         
-    
-    # goal: fill up square w/ same data 
+     
     def soundVisualizer(self):
         canvas = self.matrix.CreateFrameCanvas()
         while True:
@@ -31,7 +30,7 @@ class SoundShow(SoundManager):
             height = calculate_levels(data, chunk, sample_rate)
             i=0
             for x in range(1,31,3):
-                for y in range(0,16):
+                for y in range(0,32):
                     if(y < height[i]):
                         canvas.SetPixel( x, y,red(y),green(y),255)
                         canvas.SetPixel(x+1,y,red(y),green(y),255)

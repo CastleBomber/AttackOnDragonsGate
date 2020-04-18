@@ -19,7 +19,7 @@ class LightShow(LightManager):
     # all the work is done here
     # self.functionCall(arguments)
     def run(self):
-        self.showMyWork("dragon")
+        self.showMyWork("64x64", 64)
         
         self.sceneFlipThroughCount("whiteMoonScene", 1)
         self.goRight("bomb_right_wb")
@@ -27,7 +27,8 @@ class LightShow(LightManager):
         self.usleep(999999999)
 
     # @param sheet - pixelSheet to show off
-    def showMyWork(self, sheet):
+    # @param pixelMax - maxiumum # of pixels for 32x32 or 64x64
+    def showMyWork(self, sheet, pixelMax):
         canvas = self.matrix.CreateFrameCanvas()
         sheetName = sheet
         
@@ -36,9 +37,9 @@ class LightShow(LightManager):
         pixelStr = re.sub(r"[\n\t\s]*", "", pixelStr)
         count = 0
 
-        for y in range(0, 32):
-            for x in range(0, 32):
-                pixelPos = pixelStr[x+(y*32)]
+        for y in range(0, pixelMax):
+            for x in range(0, pixelMax):
+                pixelPos = pixelStr[x+(y*pixelMax)]
                 canvas.SetPixel( x, y,
                                  d[pixelPos][0],
                                  d[pixelPos][1],

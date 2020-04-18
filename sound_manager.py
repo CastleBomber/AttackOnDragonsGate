@@ -64,6 +64,10 @@ def green(y):
 
 def piff(val):
     return int(2*chunk*val/sample_rate)
+    
+'''
+
+'''
 
 class SoundManager(SampleBase):
     def __init__(self, *args, **kwargs):
